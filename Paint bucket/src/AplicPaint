@@ -1,0 +1,116 @@
+//Aplicação
+
+import java.util.Scanner;
+
+public class AplicPaint {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		char [][] m = new char [5][5];
+
+		int l = 0;
+		int c= 0;
+		int opc;
+		Scanner entrada = new Scanner(System.in);
+		Pilha p = new Pilha(100);
+		Matriz pos = null;
+
+		while(l<=4){
+			c=0;
+			while(c<=4){		
+				m[l][c]='.';
+				System.out.print("|"+m[l][c]);
+				c=c+1;				
+			}
+			System.out.println("|");
+			l=l+1;
+		}
+
+		l=0;
+
+		do{
+
+			System.out.println("1- Deseja Pintar?");
+			System.out.println("9- Deseja Sair?");
+
+			opc = entrada.nextInt();
+
+			switch(opc){
+
+			case 1:
+				System.out.println("Qual o numero da linha?");
+				int x = entrada.nextInt();
+				System.out.println("Qual o numero da Coluna?");
+				int y = entrada.nextInt();
+				y--;
+				x--;
+				if((x>4)||(y>4)||(x<0)||(y<0)){
+					System.out.println("valores superiores ou inferiores ao da Matriz!");
+				}else{
+					if((x==0&&y==0)||(x==0&&y==1)||(x==0&&y==2)||(x==0&&y==3)||(x==0&&y==4)||(x==1&&y==0)||(x==2&&y==0)||(x==3&&y==0)||(x==4&&y==0)||(x==4&&y==1)||(x==4&&y==2)||(x==4&&y==3)||(x==4&&y==4)||(x==3&&y==4)||(x==2&&y==4)||(x==1&&y==4)||(m[x][y]=='x')){
+						System.out.println("Opção Invalida!!!");
+					}else{
+						pos = new Matriz(x,y);
+
+						Matriz aux;
+						x=pos.getL();
+						x=x+1;
+						aux = new Matriz(x,pos.getC());
+						p.Empilha(aux);
+						x=0;
+						x=pos.getL();;
+						x=x-1;
+						aux = new Matriz(x,pos.getC());
+						p.Empilha(aux);
+						x=0;
+						y=pos.getC();
+						y=y+1;
+						aux = new Matriz(pos.getL(),y);
+						p.Empilha(aux);
+						y=0;
+						y=pos.getC();
+						y=y-1;
+						aux = new Matriz(pos.getL(),y);
+						p.Empilha(aux);
+						y=0;
+
+						while(l<=4){
+							c=0;
+							while(c<=4){
+								int i=0;				
+								if ((m[l][c]==m[p.getpos(i).getL()][p.getpos(i).getC()])){
+									while(i <=3){
+										m[p.getpos(i).getL()][p.getpos(i).getC()]='x';
+										i++;
+									}
+									System.out.print("|"+m[l][c]);
+								}else{
+									m[l][c]='.';
+									System.out.print("|"+m[l][c]);
+								}
+								c=c+1;				
+							}
+							System.out.println("|");
+							l=l+1;
+						}
+						l=0;
+						for(int f=p.getTopo();f>-1;f--){
+							p.Remove();
+						}
+					}
+				}
+				break;
+
+			case 9:
+				System.out.println("FIM !!!");
+				break;
+
+			default:
+				System.out.println("Opção Invalida!!!");
+				break;
+			}
+		}while(opc!=9);
+		entrada.close();	
+	}
+}
